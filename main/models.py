@@ -5,16 +5,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 
 User = get_user_model()
 
-#*************************
-#1 Category
-#2 Product
-#3 CartProduct
-#4 Cart
-#5 Order
-#*************************
-#6 Customer
-#7 Specification
-
 
 class Category(models.Model):
 
