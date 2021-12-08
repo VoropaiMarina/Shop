@@ -21,7 +21,7 @@ class LatestProductsManager:
             if ct_models.exists():
                 if with_respect_to in args:
                     return sorted(
-                        products, key=lambda x: x.__class__._meta.model_name.startwith(with_respect_to), reverse=True
+                        products, key=lambda x: x.__class__._meta.model_name.startswith(with_respect_to), reverse=True
                     )
         return products
 
