@@ -54,6 +54,7 @@ class Product(models.Model):
 
     MIN_RESOLUTION = (400, 400)
     MAX_RESOLUTION = (800, 800)
+    MAX_IMAGE_SIZE = 3145728
 
     class Meta:
         abstract = True
