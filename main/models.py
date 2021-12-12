@@ -6,10 +6,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.urls import reverse
 
 from io import BytesIO
 
 User = get_user_model()
+
+
+def get_product_url(obj, viewname):
+    ct_model = obj.__class__.meta.model_name
+    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
 
 
 class MinResolutionErrorException(Exception):
@@ -77,7 +83,7 @@ class Product(models.Model):
         image = self.image
         img = Image.open(image)
         new_img = img.convert('RGB')
-        resized_new_img = new_img.resize((200, 200), Image.ANTIALIAS)
+        resized_new_img = new_img.resize((800, 800), Image.ANTIALIAS)
         filestream = BytesIO()
         resized_new_img.save(filestream, 'JPEG', quality=90)
         filestream.seek(0)
@@ -100,6 +106,9 @@ class Notebook(Product):
     def __str__(self):
         return "{} : {}".format(self.category.name, self.title)
 
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
+
 
 class Smartphone(Product):
     diagonal = models.CharField(max_length=255, verbose_name='Диагональ')
@@ -114,6 +123,9 @@ class Smartphone(Product):
 
     def __str__(self):
         return "{} : {}".format(self.category.name, self.title)
+
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
 
 
 class CartProduct(models.Model):
