@@ -28,10 +28,12 @@
             <td>Нет</td>
         {% endif %}
     </tr>
-    <tr>
-        <td>Максимальный объем встраиваемой памяти</td>
-        <td>{{ product.sd_volume_max }} GB</td>
-    </tr>
+    {% if product.sd %}
+        <tr>
+            <td>Максимальный объем встраиваемой памяти</td>
+            <td>{{ product.sd_volume_max }} GB</td>
+        </tr>
+    {% endif %}
     <tr>
         <td>Основная камера</td>
         <td>{{ product.main_cam_px }} MP</td>
