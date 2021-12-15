@@ -15,7 +15,7 @@ class NotebookAdminForm(ModelForm):
         self.fields['image'].help_text = mark_safe(
             """<span style="color:red; font-size:14px;">При загрузке изображения с разрешением больше {}x{} оно будет обрезано!</span>
                 """.format(
-                *Product.MIN_RESOLUTION
+                *Product.MAX_RESOLUTION
             )
         )
 
