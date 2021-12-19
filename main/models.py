@@ -18,7 +18,7 @@ def get_models_for_count(*model_names):
 
 
 def get_product_url(obj, viewname):
-    ct_model = obj.__class__.meta.model_name
+    ct_model = obj.__class__._meta.model_name
     return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
 
 
@@ -41,7 +41,7 @@ class LatestProductsManager:
             model_products = ct_models.model_class()._base_manager.all().order_by('-id')[:5]
             products.extend(model_products)
         if with_respect_to:
-            ct_models = ContentType.objects.filter(models=with_respect_to)
+            ct_models = ContentType.objects.filter(model=with_respect_to)
             if ct_models.exists():
                 if with_respect_to in args:
                     return sorted(
