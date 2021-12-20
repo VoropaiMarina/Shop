@@ -65,7 +65,7 @@ class CategoryManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()
 
-    def get_categories_for_left_sidebar(self):
+    def get_categories_for_menu(self):
         models = get_models_for_count('notebook', 'smartphone')
         qs = list(self.get_queryset().annotate(*models))
         data = [
@@ -167,7 +167,7 @@ class CartProduct(models.Model):
     final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 
     def __str__(self):
-        return "Продукт: {} (для корзины)".format(self.product.title)
+        return "Продукт: {} (для корзины)".format(self.content_object.title)
 
 
 class Cart(models.Model):
