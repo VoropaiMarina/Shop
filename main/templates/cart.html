@@ -1,23 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{cart}}
 
-<!--<table class="table">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th scope="col">#</th>-->
-<!--        <th scope="col">First</th>-->
-<!--        <th scope="col">Last</th>-->
-<!--        <th scope="col">Handle</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr>-->
-<!--        <th scope="row">1</th>-->
-<!--        <td>Mark</td>-->
-<!--        <td>Otto</td>-->
-<!--        <td>@mdo</td>-->
-<!--    </tr>-->
+<section class="py-1 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Корзина</h2>
+        <div class="row align-items-center">
+            {% if not cart.products.count %}
+            <p class="lead text-center" style="margin-top: 40px">Ваша корзина пока пуста :(</p>
+            {% endif %}
+        </div>
+        <table class="table">
+            <tbody>
+            {% for item in cart.products.all %}
+            <tr>
+                <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
+                <th scope="row">{{ item.content_object.title }}</th>
+                <td>{{ item.content_object.price }} руб.</td>
+                <td><input class="form-control text-center me-3" id="inputQuantity" type="num" value="{{ item.qty }}"
+                           style="max-width: 3rem"/></td>
+                <td>{{ item.final_price }} руб.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 
 {% endblock content %}
