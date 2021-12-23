@@ -169,18 +169,31 @@ class CartProduct(models.Model):
     def __str__(self):
         return "Продукт: {} (для корзины)".format(self.content_object.title)
 
+    def save(self, *args, **kwargs):
+        self.final_price = self.qty * self.content_object.price
+        super().save(*args, **kwargs)
+
 
 class Cart(models.Model):
 
-    owner = models.ForeignKey('Customer', verbose_name='Владелец', on_delete=models.CASCADE)
+    owner = models.ForeignKey('Customer', null=True, verbose_name='Владелец', on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
     total_products = models.PositiveIntegerField(default=0)
-    final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
+    final_price = models.DecimalField(max_digits=9, decimal_places=2, default=0, verbose_name='Общая цена')
     in_order = models.BooleanField(default=False)
     for_anonymous_user = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
+
+    def save(self, *args, **kwargs):
+        cart_data = self.products.aggregate(models.Sum('final_price'), models.Count('id'))
+        if cart_data.get('final_price__sum'):
+            self.final_price = cart_data['final_price__sum']
+        else:
+            self.final_price = 0
+        self.total_products = cart_data['id__count']
+        super().save(*args, **kwargs)
 
 
 class Customer(models.Model):
