@@ -121,6 +121,9 @@ class Product(models.Model):
         )
         super().save(*args, **kwargs)
 
+    def get_model_name(self):
+        return self.__class__.__name__.lower()
+
 
 class Notebook(Product):
 
