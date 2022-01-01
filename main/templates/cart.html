@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<section class="py-1 bg-light">
+<section class="py-1">
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="fw-bolder mb-4">Корзина</h2>
         <div class="row align-items-center">
@@ -10,14 +10,6 @@
             <p class="lead text-center" style="margin-top: 40px">Ваша корзина пока пуста :(</p>
             {% endif %}
         </div>
-        {% if messages %}
-            {% for message in messages %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-            {% endfor %}
-        {% endif %}
         <table class="table">
             <tbody>
             {% for item in cart.products.all %}
@@ -43,6 +35,14 @@
                     <td colspan="2"></td>
                     <td>К оплате:</td>
                     <td><strong>{{ cart.final_price }} руб.</strong></td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="{% url 'checkout'%}" class="btn btn-outline-dark flex-shrink-0" type="button">
+                                <i class="bi-cart-fill me-1"></i>
+                                Оформить заказ
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             {% endif %}
             </tbody>

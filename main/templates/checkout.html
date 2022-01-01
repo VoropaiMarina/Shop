@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<section class="py-1">
+<div class="container px-4 px-lg-5 mt-5">
+    <h2 class="fw-bolder mb-4">Оформление заказа</h2>
+    <table class="table">
+        <tbody>
+        {% for item in cart.products.all %}
+        <tr>
+            <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
+            <th scope="row">{{ item.content_object.title }}</th>
+            <td>{{ item.content_object.price }} руб.</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.final_price }} руб.</td>
+        </tr>
+        {% endfor %}
+        {% if cart.products.count %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>К оплате:</td>
+            <td><strong>{{ cart.final_price }} руб.</strong></td>
+<!--            <td>-->
+<!--                <div class="d-flex">-->
+<!--                    <a href="{% url 'checkout'%}" class="btn btn-outline-dark flex-shrink-0" type="button">-->
+<!--                        <i class="bi-cart-fill me-1"></i>-->
+<!--                        Оформить заказ-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </td>-->
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+</section>
+<section class="py-1">
+    <div class="container">
+        <form action="{% url 'make_order' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.first_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.last_name|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.phone|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.address|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.buying_type|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.order_date|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group col-md-6 mb-0">
+                {{ form.comment|as_crispy_field }}
+            </div>
+
+            <input type="submit" class="btn btn-outline-dark nb-3" value="Оформить заказ">
+        </form>
+
+    </div>
+</section>
+
+{% endblock content %}
